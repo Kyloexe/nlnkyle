@@ -2,9 +2,11 @@
 # This program is a wrapper for the most common terminal commands in Linux and Windows!
 
 # MODULES
-
+# imports the os module (used to interact with the underlying operating system (Windows, linux, mac (hipster)))
 import os
+# Pathlib is a module used to make the use of paths within an OS easier for the programmer 
 from pathlib import Path
+# shutil is used to delete a file at a certain location within the filesystem using absolute paths
 import shutil
 
 # CONSTANTS
@@ -13,7 +15,12 @@ USER_VAR_LINUX = str(os.environ.get('USER'))
 
 
 
-# the main function
+# the main function is used to call all the underlying functions which contain all the functionality of this script
+
+'''This function welcomes the user, it then asks the user which operating system's commands they'd like to use. 
+If the user selects windows, the windows function is called
+If the user selects linux, the linux function is called
+Once one of these functions are ran, the script ends'''
 
 def main():
     print("=" * 39)
@@ -76,7 +83,7 @@ def linux():
 
     command_choice_linux = input("Which Bash commands would you like to execute? ")
 
-    # if c, the below block of code is executed
+    # if below statement is true, the below block of code is executed
 
     if command_choice_linux == list_command_linux[0]:
 
@@ -93,15 +100,17 @@ def linux():
             if_file.write(e)
             if_file.close()
 
-        # If the variable is equelled to 2, ifconfig is ran
+        # If the variable is equelled to 2, ifconfig is executed in the terminal
 
         elif to_file_ifconfig == "2":
             os.system('ifconfig')
     
-    # runs top when the variable command_choice is the same as 2
+    # runs top when the statement containing it is true
 
     elif command_choice_linux == list_command_linux[1]:
         os.system('top')
+
+    # if the below statement is true, the user is asks to input the name of the file to be created, then the path where the file will be located on the main drive (both of these are stored as variables)
 
     elif command_choice_linux == list_command_linux[2]:
         name_of_file_touch = input("Okay, we're now using touch! What is the name of the file?: ")
@@ -110,7 +119,7 @@ def linux():
         if path_of_file_touch.exists == False:
             os.system(f'touch {path_of_file_touch}')
 
-        
+   # Very similar to the above block of code, creates a directory named by the user at a certain location on the main drive     
                       
     elif command_choice_linux == list_command_linux[3]:
         print("Okay, we're now creating directories!")
@@ -118,6 +127,8 @@ def linux():
         name_of_dir_linux = Path(input("Please input the name of the directory you want to make"))
         name_of_dir_linux.mkdir(parents=True, exist_ok=True)
         
+    # Similar to above block of code, instead uses shutil to remove a directory
+
     elif command_choice_linux == list_command_linux[4]:
         print("Okay, we're now removing directories!")
         name_of_dir_linux_remove = Path(input("Please input the name of the directory you want to remove"))
@@ -127,11 +138,12 @@ def linux():
         except OSError as e:
             print("E")
            
-
+# The function from which the windows commands are ran
         
 def windows():
     print("You have entered WINDOWS mode!")
 
+    # Prints the options avaialble to the user
 
     print("OPTIONS")
     print('1: ipconfig')
@@ -140,9 +152,19 @@ def windows():
     print('4: mkdir')
     print('5: rmdir')
 
+    # A list called 'list_cmd' is created with 5 strings going from '1' to '5'
+
     list_cmd = ['1','2','3','4','5']
 
+    # Asks the user to input a number above that correlates to a command
+
     command_choice_cmd = input("Please input a choice from the above options: ")
+
+    '''Below, comments will only explain the general idea of the code and it'll explain the more complicated code where possible'''
+
+    # if this if statement is true, it asks the user if they want to put the output of the command into a file
+    # if the if statement is false, it just runs the command in the terminal
+
 
     if command_choice_cmd == list_cmd[0]:
         to_file_ipconfig = input('Do you want to print your network information to a text file? (Y/N)')
@@ -155,28 +177,40 @@ def windows():
         elif to_file_ipconfig == list_file_ipconfig[2] or to_file_ipconfig == [4]:
             os.system('ipconfig /all')
 
+    # runs the command if the if statement is true
+
     elif command_choice_cmd == list_cmd[1]:
         os.system('tasklist')
+
+    # If if is true, asks the user to input data into a variable, then to name the file, that is put into another variable
+    # Lastly, the command 'echo' is ran with the variables created to create the specified file
 
     elif command_choice_cmd == list_cmd[2]:
         name_of_file_cmd = input("Please input a name for the new file!: ")
         stuff_in_file_cmd = input("Please input what you want to be in the file: ")
         os.system(f'echo {stuff_in_file_cmd} >> {name_of_file_cmd}')
 
+    # if the below statement is true, the user is asked to name a directory within a variable, the command 'mkdir' is then executed with the used variable
+
     elif command_choice_cmd == list_cmd[3]:
         name_of_dir_cmd = input("Please input the name of the directory you want to create: ")
         os.system(f'mkdir {name_of_dir_cmd}')
 
+    # The user is asks to input the name of a directory to be removed, the command 'rmdir' is then executed with the inputted directory
+
     elif command_choice_cmd == list_cmd[4]:
         name_of_dir_remove_cmd = input("Please input the name of the directory you want to remove: ")
         os.system(f'rmdir {name_of_dir_remove_cmd}')
-        print("e")
+
+    # If none of the above options are true, the function windows() is ran (brings the user back to the beginning, acting as an impromptu loop)
 
     else:
         windows()
+
+# Is used to ensure that this script can be ran as both a module (like print()) or a standalone script to be executed as a file
 
 if __name__ == "__main__":
     main()
 
 
-# Refactor the linux() function to have if statements check if the user input is within a pre-determined list
+
